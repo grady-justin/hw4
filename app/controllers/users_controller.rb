@@ -6,8 +6,12 @@ class UsersController < ApplicationController
     @user = User.new
     @user["username"] = params["username"]
     @user["email"] = params["email"]
-    @user["password"] = params["password"]
-    @user.save
-    redirect_to "/"
+    @user.password = params["password"]
+    if @user.save
+      redirect_to "/login"
+    else
+      flash["notice"] = "Email already taken. Please try a different email."
+      redirect_to "/users/new"
+    end
   end
 end
